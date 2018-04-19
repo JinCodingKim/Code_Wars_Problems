@@ -68,6 +68,8 @@ function array_diff(a, b) {
 
 // You may assume that the input string will only contain opening and closing parenthesis and will not be an empty string.
 
+// Solution :
+
 function validParentheses(parens) {
   let open = 0;
   let close = 0;
@@ -94,6 +96,8 @@ function validParentheses(parens) {
 // Note
 // Please don't post issue about difficulty or duplicate.
 
+// Solution :
+
 function balance(left, right) {
   let leftTotal = 0;
   let rightTotal = 0;
@@ -111,3 +115,83 @@ function balance(left, right) {
     return "Balance";
   }
 }
+
+/////////////////////////
+//// Array Helpers //////
+/////////////////////////
+
+// This kata is designed to test your ability to extend the functionality of built-in ruby classes. In this case, we want you to extend the built-in Array class with the following methods: square(), cube(), average(), sum(), even() and odd().
+
+// Explanation:
+
+// square() must return a copy of the array, containing all values squared, the original array must not be changed
+// cube() must return a copy of the array, containing all values cubed, the original array must not be changed
+// average() must return the average of all array values, average() on an empty array must return NaN
+// sum() must return the sum of all array values
+// even() must return an array of all even numbers, the original array must not be changed
+// odd() must return an array of all odd numbers, the original array must not be changed
+// Examples:
+
+// var numbers = [1, 2, 3, 4, 5];
+// numbers.square(); // must return [1, 4, 9, 16, 25]
+// numbers.cube(); // must return [1, 8, 27, 64, 125]
+// numbers.average(); // must return 3
+// numbers.sum(); // must return 15
+// numbers.even(); // must return [2, 4]
+// numbers.odd(); // must return [1, 3, 5]
+
+// Solution :
+
+Array.prototype.square = function() {
+  let copy = this.slice();
+  for (let i = 0; i < copy.length; i++) {
+    copy[i] *= copy[i];
+  }
+  return copy;
+};
+
+Array.prototype.cube = function() {
+  let copy = this.slice();
+  for (let i = 0; i < copy.length; i++) {
+    copy[i] *= copy[i] * copy[i];
+  }
+  return copy;
+};
+
+Array.prototype.average = function() {
+  let sum = 0;
+  for (let i = 0; i < this.length; i++) {
+    sum += this[i];
+  }
+  return sum / this.length;
+};
+
+Array.prototype.sum = function() {
+  let sum = 0;
+  for (let i = 0; i < this.length; i++) {
+    sum += this[i];
+  }
+  return sum;
+};
+
+Array.prototype.even = function() {
+  let copy = this.slice();
+  let evens = [];
+  for (let i = 0; i < copy.length; i++) {
+    if (copy[i] % 2 === 0) {
+      evens.push(copy[i]);
+    }
+  }
+  return evens;
+};
+
+Array.prototype.odd = function() {
+  let copy = this.slice();
+  let odds = [];
+  for (let i = 0; i < copy.length; i++) {
+    if (copy[i] % 2 !== 0) {
+      odds.push(copy[i]);
+    }
+  }
+  return odds;
+};
