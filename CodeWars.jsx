@@ -226,3 +226,84 @@ function songDecoder(song) {
     .filter(e => (e ? e : null))
     .join(" ");
 }
+
+///////////////////////
+// Duplicate Encoder //
+///////////////////////
+
+// The goal of this exercise is to convert a string to a new string where each character in the new string is '(' if that character appears only once in the original string, or ')' if that character appears more than once in the original string. Ignore capitalization when determining if a character is a duplicate.
+
+// Examples:
+
+// "din" => "((("
+
+// "recede" => "()()()"
+
+// "Success" => ")())())"
+
+// "(( @" => "))(("
+
+// Notes:
+
+// Assertion messages may be unclear about what they display in some languages. If you read "...It Should encode XXX", the "XXX" is actually the expected result, not the input! (these languages are locked so that's not possible to correct it).
+
+// Solution :
+
+function duplicateEncode(word) {
+  return word
+    .toLowerCase()
+    .split("")
+    .map(
+      (e, i, arr) =>
+        arr.indexOf(e) !== arr.lastIndexOf(e) ? (e = ")") : (e = "(")
+    )
+    .join("");
+}
+
+/////////////////////
+// Break camelCase //
+/////////////////////
+
+// Complete the solution so that the function will break up camel casing, using a space between words.
+
+// Example
+// solution('camelCasing') // => should return 'camel Casing'
+
+// Solution :
+
+function solution(string) {
+  return string
+    .split("")
+    .map(e => (e === e.toUpperCase() ? ` ${e}` : e))
+    .join("");
+}
+
+/////////////////////////
+// Human Readable Time //
+/////////////////////////
+
+// Write a function, which takes a non-negative integer (seconds) as input and returns the time in a human-readable format (HH:MM:SS)
+
+// HH = hours, padded to 2 digits, range: 00 - 99
+// MM = minutes, padded to 2 digits, range: 00 - 59
+// SS = seconds, padded to 2 digits, range: 00 - 59
+// The maximum time never exceeds 359999 (99:59:59)
+
+// You can find some examples in the test fixtures.
+
+// Solution :
+
+function humanReadable(seconds) {
+  let h = Math.floor(seconds / 3600);
+  let min = Math.floor((seconds % 3600) / 60);
+  let sec = seconds - h * 3600 - min * 60;
+  return [h, min, sec]
+    .map(time => {
+      if (time.toString().length < 2) {
+        return `0${time}`;
+      } else {
+        return time;
+      }
+    })
+    .join(":");
+}
