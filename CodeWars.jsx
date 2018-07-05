@@ -307,3 +307,129 @@ function humanReadable(seconds) {
     })
     .join(":");
 }
+
+/////////////////////////
+//    Fruit Machine    //
+/////////////////////////
+
+// 	You will be given three reels of different images and told at which index the reels stop. From this information your job is to return the score of the resulted reels.
+
+// 1. There are always exactly three reels
+// 2. Each reel has 10 different items.
+// 3. The three reel inputs may be different.
+// 4. The spin array represents the index of where the reels finish.
+// 5. The three spin inputs may be different
+// 6. Three of the same is worth more than two of the same
+// 7. Two of the same plus one "Wild" is double the score.
+// 8. No matching items returns 0.
+
+// Item
+// Three of the same
+
+// Two of the same
+
+// Two of the same plus one Wild
+
+// Wild
+// 100
+// 10
+// N/A
+
+// Star
+// 90
+// 9
+// 18
+
+// Bell
+// 80
+// 8
+// 16
+
+// Shell
+// 70
+// 7
+// 14
+
+// Seven
+// 60
+// 6
+// 12
+
+// Cherry
+// 50
+// 5
+// 10
+
+// Bar
+// 40
+// 4
+// 8
+
+// King
+// 30
+// 3
+// 6
+
+// Queen
+// 20
+// 2
+// 4
+
+// Jack
+// 10
+// 1
+// 2
+
+// Return an integer of the score.
+
+// Solution :
+
+function fruit(reels, spins) {
+  const winning = {
+    Wild: 10,
+    Star: 9,
+    Bell: 8,
+    Shell: 7,
+    Seven: 6,
+    Cherry: 5,
+    Bar: 4,
+    King: 3,
+    Queen: 2,
+    Jack: 1
+  };
+  let count = 0;
+  let chosen = [];
+  let chosenCount = {};
+  let chosenSortable = [];
+  let prize = 0;
+
+  for (let i = 0; i < spins.length; i++) {
+    chosen.push(reels[count][spins[i]]);
+    count++;
+  }
+
+  chosen.forEach(e => (chosenCount[e] = (chosenCount[e] || 0) + 1));
+
+  for (let sorted in chosenCount) {
+    chosenSortable.push([sorted, chosenCount[sorted]]);
+  }
+  chosenSortable.sort((a, b) => b[1] - a[1]);
+
+  for (let j = 0; j < chosenSortable.length; j++) {
+    let sortName = chosenSortable[j][0];
+    let sortVal = chosenSortable[j][1];
+    if (sortVal === 3) {
+      return (winning[sortName] *= 10);
+    } else if (
+      sortVal === 2 &&
+      sortName !== "Wild" &&
+      chosenCount.hasOwnProperty("Wild")
+    ) {
+      return (winning[sortName] *= 2);
+    } else if (sortVal === 2) {
+      return winning[sortName];
+    } else {
+      return 0;
+    }
+  }
+}
