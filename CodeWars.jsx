@@ -455,3 +455,36 @@ function domainName(url) {
     return url.split(".")[0];
   }
 }
+
+/////////////////////////////////////
+// Highest Rank Number in an Array //
+/////////////////////////////////////
+
+// Write a method highestRank(arr) (or highest-rank in clojure) which returns the number which is most frequent in the given input array (or ISeq). If there is a tie for most frequent number, return the largest number of which is most frequent.
+
+// Example:
+
+// arr = [12, 10, 8, 12, 7, 6, 4, 10, 12];
+// highestRank(arr) //=> returns 12
+
+// arr = [12, 10, 8, 12, 7, 6, 4, 10, 12, 10];
+// highestRank(arr) //=> returns 12
+
+// arr = [12, 10, 8, 8, 3, 3, 3, 3, 2, 4, 10, 12, 10];
+// highestRank(arr) //=> returns 3
+
+// Solution :
+
+function highestRank(arr) {
+  let counterObj = {};
+  let sortableCounter = [];
+  arr.forEach(num => (counterObj[num] = (counterObj[num] || 0) + 1));
+  for (let count in counterObj) {
+    sortableCounter.push([count, counterObj[count]]);
+  }
+  let topNumbers = sortableCounter
+    .sort((a, b) => b[1] - a[1])
+    .filter((e, i, arr) => arr[0][1] === e[1])
+    .sort((a, b) => b[0] - a[0]);
+  return Number(topNumbers[0][0]);
+}
