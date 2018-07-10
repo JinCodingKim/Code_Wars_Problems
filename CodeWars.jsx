@@ -624,3 +624,127 @@ function dirReduc(arr) {
   }
   return newDir;
 }
+
+////////////////////////
+// Advanced Pig Latin //
+////////////////////////
+
+// Pig latin is created by taking all the consonants before the first vowel of a word and moving them to the back of the word followed by the letters "ay".
+
+// "hello" => "ellohay"
+// "creating" => "eatingcray"
+// If the first letter of the word is a vowel, the string is left the same and the letters "way" are appended to the end.
+
+// "algorithm" => "algorithmway"
+// This problem is different from other variations in that it expects casing to remain the same so:
+
+// "Hello World" => "Ellohay Orldway"
+// as well as punctuation.
+
+// "Pizza? Yes please!" => "Izzapay? Esyay easeplay!"
+// Your job is to take a string and translate it to Pig Latin. The string will never be undefined but may contain both numbers and letters. A word will never be a combination of numbers and letters. Also, there will never be punctuation at the beginning of a word and the only capital letter in a word will be the first letter meaning there are zero all capitalized words.
+
+// Solution :
+
+function translate(sentence) {
+  /* ex : sentence = "Hello!! To you." */
+  const vowels = "aeiouAEIOU";
+  const etc = ".,!?;:";
+  const sentenceArr = sentence.toLowerCase().split(" ");
+  let newArr = [];
+  let etcArr = [];
+  let tempArr = [];
+
+  /* 
+  Create temp array with strings with no !?.,:; 
+  (creates nested arrays with index markers of strings that had special characters)
+  ex : [[0, "hello"], [2, "you"]];
+  */
+
+  /*
+  Create etc array with just !?.,:;
+  (creates nested arrays with index markers of where special characters belong)
+  ex : [[0, "!!"], [2,"."]];
+  */
+
+  sentenceArr.forEach((e, i) => {
+    for (let j = 0; j < e.length; j++) {
+      if (etc.includes(e[j])) {
+        let etcSlice = e.slice(j);
+        let textSlice = e.slice(0, j);
+        etcArr.push([i, `${etcSlice}`]);
+        tempArr.push([i, textSlice]);
+        return;
+      }
+    }
+  });
+
+  /* 
+  This will replace the original sentence array with the clean strings without special characters.
+  ex : ["hello!!", "to", "you."] --> ["hello", "to", "you"] 
+  */
+
+  for (let i = 0; i < sentenceArr.length; i++) {
+    for (let j = 0; j < tempArr.length; j++) {
+      if (tempArr[j][0] === i) {
+        sentenceArr[i] = tempArr[j][1];
+      }
+    }
+  }
+
+  /* 
+  Now without the special characters this will create a new array with the pig latin changes from
+  the original sentence array.
+  ex : sentence array = ["hello", "to", "you"] --> new array = ["ellohay", "otay", "ouyay"]
+  */
+
+  sentenceArr.forEach(e => {
+    for (let i = 0; i < e.length; i++) {
+      let aySlice;
+      let textSlice;
+      if (vowels.includes(e[i])) {
+        if (i === 0) {
+          aySlice = e.slice(0, i);
+          textSlice = e.slice(i);
+          newArr.push(`${textSlice}${aySlice}way`);
+          return;
+        } else {
+          aySlice = e.slice(0, i);
+          textSlice = e.slice(i);
+          newArr.push(`${textSlice}${aySlice}ay`);
+          return;
+        }
+      }
+    }
+  });
+
+  /*
+  With the pig latin changes, this will put the special characters back to the back of each word
+  within the new pig latin array.
+  ex : ["ellohay", "otay", "ouyay"] --> ["ellohay!!", "otay", "ouyay."]
+  */
+
+  for (let k = 0; k < newArr.length; k++) {
+    for (let l = 0; l < etcArr.length; l++) {
+      if (etcArr[l][0] === k) {
+        newArr[k] = newArr[k].concat(etcArr[l][1]);
+      }
+    }
+  }
+
+  /*
+  Finally, the new pig latin array will check once more with the original sentence array, and
+  check which words started with a capital letter and make the necessary changes.
+  ex : ["Hello!!", "To", "you."] --> ["Ellohay!!", "Otay", "ouyay."]
+  */
+
+  sentence.split(" ").forEach((word, i) => {
+    if (word[0] === word[0].toUpperCase()) {
+      newArr[i] = newArr[i].charAt(0).toUpperCase() + newArr[i].slice(1);
+    }
+  });
+
+  // We will now join the array into a single string with single space between the words.
+
+  return newArr.join(" ");
+}
